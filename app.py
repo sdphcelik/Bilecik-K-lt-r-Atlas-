@@ -53,7 +53,17 @@ with col1:
         for idx in top_results:
             score = scores[idx].item()
             row = df.iloc[idx]
-            
+            # ... (row satırının altı) ...
+    
+    # --- BURADAN İTİBAREN YAPIŞTIR ---
+    # DİKKAT: Üstteki 'row' satırı ile aynı hizada başlamalı!
+            if 'media_link' in row and pd.notna(row['media_link']):
+               st.subheader("🎧 Dinle")
+               try:
+                     st.video(row['media_link'])
+               except:
+                     st.warning("Medya yüklenemedi.")
+    # --- BİTİŞ ---
             st.markdown(f"**{row['baslik']}**")
             st.caption(f"Kategori: {row['kategori']} | Uyumluluk: %{int(score*100)}")
             st.write(f"_{str(row['metin'])[:150]}..._")
@@ -86,4 +96,5 @@ with col2:
     fig.update_traces(textposition='top center')
     fig.update_layout(showlegend=True, height=600)
     
+
     st.plotly_chart(fig, use_container_width=True)
